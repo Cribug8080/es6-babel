@@ -1,5 +1,12 @@
-# new_note
+# es-babel
 ## let
+
+<style>
+pre {
+display: inline-block;
+width: 45%;
+}
+</style>
 
 ```js
 let g1 = 'g1';
@@ -11,6 +18,7 @@ console.log(g1)
 console.log(g2)
 console.log(g3)
 ```
+
 ```js
 "use strict";
 
