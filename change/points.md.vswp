@@ -1,0 +1,3 @@
+vnote_backup_file_826537664 /Users/apple/Documents/vnote_notebooks/es6-babel/change/points.md
+# points
+- 从 ES5 开始，函数内部可以设定为严格模式。只要函数参数使用了默认值、解构赋值、或者扩展运算符，那么函数内部就不能显式设定为严格模式，否则会报错
