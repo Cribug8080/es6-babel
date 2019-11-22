@@ -620,6 +620,137 @@ var highlightItemOnlyInOutline = function(id) {
 <span class="hljs-built_in">Object</span>.is(+<span class="hljs-number">0</span>, <span class="hljs-number">-0</span>) <span class="hljs-comment">// false</span>
 <span class="hljs-built_in">Object</span>.is(<span class="hljs-literal">NaN</span>, <span class="hljs-literal">NaN</span>) <span class="hljs-comment">// true</span>
 </code></pre>
+<h3 id="toc_10">Object.assign()<a class="vnote-anchor" href="#toc_10" data-anchor-icon="#"></a></h3>
+<p>用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）</p>
+<pre><code class="lang-js hljs"><span class="hljs-keyword">let</span> a = {<span class="hljs-attr">a</span>: <span class="hljs-number">1</span>}, b = {<span class="hljs-attr">a</span>: <span class="hljs-number">11</span>,<span class="hljs-attr">b</span>: <span class="hljs-number">2</span>}, c = {<span class="hljs-attr">c</span>: <span class="hljs-number">3</span>};
+<span class="hljs-built_in">Object</span>.assign(a, b) <span class="hljs-comment">//=&gt;{a: 11, b: 2}</span>
+<span class="hljs-built_in">Object</span>.assign(a, c) === a <span class="hljs-comment">// =&gt; true</span>
+</code></pre>
+<h2 id="toc_11">Symbol<a class="vnote-anchor" href="#toc_11" data-anchor-icon="#"></a></h2>
+<p>表示独一无二的值。<br>
+注意，Symbol函数前不能使用new命令，否则会报错。这是因为生成的 Symbol 是一个原始类型的值，不是对象。也就是说，由于 Symbol 值不是对象，所以不能添加属性。基本上，它是一种类似于字符串的数据类型。</p>
+<pre><code class="lang-js hljs"><span class="hljs-keyword">let</span> s = <span class="hljs-built_in">Symbol</span>();
+<span class="hljs-keyword">let</span> s1 = <span class="hljs-built_in">Symbol</span>(<span class="hljs-string">'foo'</span>);
+</code></pre>
+<ul>
+<li>Symbol函数前不能使用<code>new</code>命令</li>
+<li>不能与其他类型的值进行运算，但是可以显式转为字符串，可以转为布尔值，但是不能转为数值</li>
+<li>该属性不会出现在<code>for...in</code>、<code>for...of</code>循环中。也不会被<code>Object.keys()</code>、<code>Object.getOwnPropertyNames()</code>、<code>JSON.stringify()</code>返回</li>
+<li>不是私有属性，有一个<code>Object.getOwnPropertySymbols()</code>方法，可以获取指定对象的所有<code>Symbol</code> 属性名。<code>Reflect.ownKeys()</code>方法也可以</li>
+<li></li>
+</ul>
+<h2 id="toc_12">Iterator<a class="vnote-anchor" href="#toc_12" data-anchor-icon="#"></a></h2>
+<p>Iterator 接口的目的，就是为所有数据结构，提供了一种统一的访问机制，即for...of循环。当使用for...of循环遍历某种数据结构时，该循环会自动去寻找 Iterator 接口。一种数据结构只要部署了 Iterator 接口，我们就称这种数据结构是“可遍历的”（iterable）。<br>
+默认的 Iterator 接口部署在数据结构的Symbol.iterator属性，或者说，一个数据结构只要具有Symbol.iterator属性，就可以认为是“可遍历的”。</p>
+<pre><code class="lang-js hljs"><span class="hljs-built_in">Symbol</span>.iterator <span class="hljs-comment">// =&gt; Symbol(Symbol.iterator)</span>
+arr = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+<span class="hljs-keyword">let</span> iter = arr[<span class="hljs-built_in">Symbol</span>.iterator]()
+iter.next() <span class="hljs-comment">// =&gt; {value: 1, done: false}</span>
+iter.next() <span class="hljs-comment">// =&gt; {value: 2, done: false}</span>
+iter.next() <span class="hljs-comment">// =&gt; {value: undefined, done: true}</span>
+
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> ele <span class="hljs-keyword">of</span> arr){<span class="hljs-built_in">console</span>.log(ele)} <span class="hljs-comment">// =&gt; 1 2 3</span>
+</code></pre>
+<p>Array、Map、Set、String、TypedArray、函数的 arguments 对象、NodeList 对象</p>
+<p>自定义iterator，可以使用forof</p>
+<pre><code class="lang-js hljs"><span class="hljs-keyword">let</span> arr = [<span class="hljs-number">1</span> ,<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+<span class="hljs-keyword">let</span> obj = {<span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span>}
+
+obj[<span class="hljs-built_in">Symbol</span>.iterator] = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">idMaker</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">let</span> keys = <span class="hljs-built_in">Object</span>.keys(<span class="hljs-keyword">this</span>)
+  
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">next</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+          <span class="hljs-keyword">if</span>(index &lt; keys.length) {
+            <span class="hljs-keyword">return</span> {<span class="hljs-attr">value</span>: keys[index++], <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span>};
+          }<span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> {<span class="hljs-attr">value</span>: <span class="hljs-literal">undefined</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span>};
+          }
+      }
+    };
+  }
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> iterator <span class="hljs-keyword">of</span> obj) {
+    <span class="hljs-built_in">console</span>.log(iterator)
+}
+<span class="hljs-comment">// =&gt; a b</span>
+</code></pre>
+<p>for...of、Array.from()、Map()、Set()、WeakMap()、WeakSet()（比如new Map([['a',1],['b',2]])）、Promise.all()、Promise.race()</p>
+<p>除了for...of循环以外，扩展运算符（...）、解构赋值和Array.from方法内部调用的，都是遍历器接口。这意味着，它们都可以将 Generator 函数返回的 Iterator 对象，作为参数。</p>
+<h2 id="toc_13">window.btoa  window.atob<a class="vnote-anchor" href="#toc_13" data-anchor-icon="#"></a></h2>
+<ul>
+<li>btoa ASCII 的二进制数据的单个字节 -&gt;  Base64 表示的字符串</li>
+</ul>
+<pre><code class="lang-js hljs"><span class="hljs-built_in">window</span>.btoa(<span class="hljs-string">"F"</span>) <span class="hljs-comment">// =&gt; "Rg=="</span>
+<span class="hljs-built_in">window</span>.atob(<span class="hljs-string">"Rg=="</span>) <span class="hljs-comment">// =&gt; "F"</span>
+</code></pre>
+<h2 id="toc_14">base64<a class="vnote-anchor" href="#toc_14" data-anchor-icon="#"></a></h2>
+<p>Base64是一种用64个字符来表示任意二进制数据的方法。</p>
+<p>首先，准备一个包含64个字符的数组：<br>
+['A', 'B', 'C', ... 'a', 'b', 'c', ... '0', '1', ... '+', '/']</p>
+<pre><code class="lang-js hljs"><span class="hljs-built_in">Number</span>.parseInt(<span class="hljs-string">"111111"</span>, <span class="hljs-number">2</span>) <span class="hljs-comment">// =&gt; 63</span>
+</code></pre>
+<p>字符串一字节8比特<br>
+base64一个字符对应6比特<br>
+所以三个字符串对应base64编码后4个字符串，长度增加33%。</p>
+<p><img src='data:image/png;base64,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' alt="二进制转换base64" class="view-image"></p>
+<h4 id="toc_15">小结<a class="vnote-anchor" href="#toc_15" data-anchor-icon="#"></a></h4>
+<p>Base64是一种任意二进制到文本字符串的编码方法，常用于在URL、Cookie、网页中传输少量二进制数据。</p>
+<h2 id="toc_16">async<a class="vnote-anchor" href="#toc_16" data-anchor-icon="#"></a></h2>
+<p>是 Generator 函数的语法糖</p>
+<ul>
+<li>await命令后面是一个 Promise 对象，返回该对象的结果</li>
+<li>如果不是 Promise 对象，就直接返回对应的值</li>
+<li>await命令后面是一个thenable对象（即定义then方法的对象），那么await会将其等同于 Promise 对象</li>
+</ul>
+<pre><code class="lang-js hljs"><span class="hljs-comment">// 1 Promise 对象</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sleep</span>(<span class="hljs-params">time = <span class="hljs-number">1000</span></span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {
+    setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+      resolve(time)
+    }, time);
+  })
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fetch</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'1'</span>)
+  <span class="hljs-keyword">await</span> sleep()
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'3'</span>)
+}
+
+fetch() <span class="hljs-comment">// =&gt; 1 1s后 3</span>
+
+<span class="hljs-comment">// 2 普通对象</span>
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">f</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-comment">// 等同于</span>
+  <span class="hljs-comment">// return 123;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> <span class="hljs-number">123</span>;
+}
+
+f().then(<span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(v))
+
+<span class="hljs-comment">// 3 thenable对象</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sleep</span> </span>{
+  <span class="hljs-keyword">constructor</span>(timeout) {
+    <span class="hljs-keyword">this</span>.timeout = timeout;
+  }
+  then(resolve, reject) {
+    <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
+    setTimeout(
+      <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> resolve(<span class="hljs-built_in">Date</span>.now() - startTime),
+      <span class="hljs-keyword">this</span>.timeout
+    );
+  }
+}
+
+(<span class="hljs-keyword">async</span> () =&gt; {
+  <span class="hljs-keyword">const</span> sleepTime = <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> Sleep(<span class="hljs-number">1000</span>);
+  <span class="hljs-built_in">console</span>.log(sleepTime);
+})();
+<span class="hljs-comment">// 1000</span>
+</code></pre>
+<p><strong>thenable：</strong> await命令后面是一个Sleep对象的实例。这个实例不是 Promise 对象，但是因为定义了then方法，await会将其视为Promise处理</p>
 
     </div>
 </div>

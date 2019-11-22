@@ -33,4 +33,150 @@ NaN === NaN // false
 Object.is(+0, -0) // false
 Object.is(NaN, NaN) // true
 ```
+### Object.assign()
+用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）
+```js
+let a = {a: 1}, b = {a: 11,b: 2}, c = {c: 3};
+Object.assign(a, b) //=>{a: 11, b: 2}
+Object.assign(a, c) === a // => true
+```
+
+## Symbol
+表示独一无二的值。
+注意，Symbol函数前不能使用new命令，否则会报错。这是因为生成的 Symbol 是一个原始类型的值，不是对象。也就是说，由于 Symbol 值不是对象，所以不能添加属性。基本上，它是一种类似于字符串的数据类型。
+```js
+let s = Symbol();
+let s1 = Symbol('foo');
+```
+- Symbol函数前不能使用`new`命令
+- 不能与其他类型的值进行运算，但是可以显式转为字符串，可以转为布尔值，但是不能转为数值
+- 该属性不会出现在`for...in`、`for...of`循环中。也不会被`Object.keys()`、`Object.getOwnPropertyNames()`、`JSON.stringify()`返回
+- 不是私有属性，有一个`Object.getOwnPropertySymbols()`方法，可以获取指定对象的所有` Symbol` 属性名。`Reflect.ownKeys()`方法也可以
+- 
+
+## Iterator
+Iterator 接口的目的，就是为所有数据结构，提供了一种统一的访问机制，即for...of循环。当使用for...of循环遍历某种数据结构时，该循环会自动去寻找 Iterator 接口。一种数据结构只要部署了 Iterator 接口，我们就称这种数据结构是“可遍历的”（iterable）。
+默认的 Iterator 接口部署在数据结构的Symbol.iterator属性，或者说，一个数据结构只要具有Symbol.iterator属性，就可以认为是“可遍历的”。
+```js
+Symbol.iterator // => Symbol(Symbol.iterator)
+arr = [1,2,3]
+let iter = arr[Symbol.iterator]()
+iter.next() // => {value: 1, done: false}
+iter.next() // => {value: 2, done: false}
+iter.next() // => {value: undefined, done: true}
+
+for(let ele of arr){console.log(ele)} // => 1 2 3
+```
+Array、Map、Set、String、TypedArray、函数的 arguments 对象、NodeList 对象
+
+自定义iterator，可以使用forof
+```js
+let arr = [1 ,2, 3]
+let obj = {a: 1, b: 2}
+
+obj[Symbol.iterator] = function idMaker() {
+    var index = 0;
+    let keys = Object.keys(this)
+  
+    return {
+      next: function() {
+          if(index < keys.length) {
+            return {value: keys[index++], done: false};
+          }else {
+            return {value: undefined, done: true};
+          }
+      }
+    };
+  }
+
+for (const iterator of obj) {
+    console.log(iterator)
+}
+// => a b
+```
+for...of、Array.from()、Map()、Set()、WeakMap()、WeakSet()（比如new Map([['a',1],['b',2]])）、Promise.all()、Promise.race()
+
+除了for...of循环以外，扩展运算符（...）、解构赋值和Array.from方法内部调用的，都是遍历器接口。这意味着，它们都可以将 Generator 函数返回的 Iterator 对象，作为参数。
+
+## window.btoa  window.atob
+- btoa ASCII 的二进制数据的单个字节 ->  Base64 表示的字符串
+```js
+window.btoa("F") // => "Rg=="
+window.atob("Rg==") // => "F"
+```
+
+## base64
+Base64是一种用64个字符来表示任意二进制数据的方法。
+
+首先，准备一个包含64个字符的数组：
+['A', 'B', 'C', ... 'a', 'b', 'c', ... '0', '1', ... '+', '/']
+```js
+Number.parseInt("111111", 2) // => 63
+```
+字符串一字节8比特
+base64一个字符对应6比特
+所以三个字符串对应base64编码后4个字符串，长度增加33%。
+
+
+![二进制转换base64](_v_images/20191121101930334_935229881.png)
+
+#### 小结
+Base64是一种任意二进制到文本字符串的编码方法，常用于在URL、Cookie、网页中传输少量二进制数据。
+
+## async
+是 Generator 函数的语法糖
+- await命令后面是一个 Promise 对象，返回该对象的结果
+- 如果不是 Promise 对象，就直接返回对应的值
+- await命令后面是一个thenable对象（即定义then方法的对象），那么await会将其等同于 Promise 对象
+```js
+// 1 Promise 对象
+function sleep(time = 1000) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(time)
+    }, time);
+  })
+}
+
+async function fetch() {
+  console.log('1')
+  await sleep()
+  console.log('3')
+}
+
+fetch() // => 1 1s后 3
+
+// 2 普通对象
+async function f() {
+  // 等同于
+  // return 123;
+  return await 123;
+}
+
+f().then(v => console.log(v))
+
+// 3 thenable对象
+class Sleep {
+  constructor(timeout) {
+    this.timeout = timeout;
+  }
+  then(resolve, reject) {
+    const startTime = Date.now();
+    setTimeout(
+      () => resolve(Date.now() - startTime),
+      this.timeout
+    );
+  }
+}
+
+(async () => {
+  const sleepTime = await new Sleep(1000);
+  console.log(sleepTime);
+})();
+// 1000
+```
+**thenable：** await命令后面是一个Sleep对象的实例。这个实例不是 Promise 对象，但是因为定义了then方法，await会将其视为Promise处理
+
+
+
 
