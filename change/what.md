@@ -1,3 +1,5 @@
+
+[TOC]
 # what
 ## console
 
@@ -120,7 +122,7 @@ base64一个字符对应6比特
 
 ![二进制转换base64](_v_images/20191121101930334_935229881.png)
 
-#### 小结
+### 小结
 Base64是一种任意二进制到文本字符串的编码方法，常用于在URL、Cookie、网页中传输少量二进制数据。
 
 ## async
@@ -176,6 +178,143 @@ class Sleep {
 // 1000
 ```
 **thenable：** await命令后面是一个Sleep对象的实例。这个实例不是 Promise 对象，但是因为定义了then方法，await会将其视为Promise处理
+
+## 对象原始类型转换
+
+```mermaid
+graph LR;
+A[Symbol.toPrimitive]-->B[valueOf];
+B-->C[toString]
+C-->D[Object.prototype.toString]
+```
+
+```js
+Symbol.toPrimitive // => Symbol(Symbol.toPrimitive)
+obj = {[Symbol.toPrimitive](){return 1}, value: 2, valueOf(){return 3}, toString(){return 4}}
+obj+1 //=> 2
+obj = {value: 2, valueOf(){return 3}, toString(){return 4}}
+obj+1 //=> 4
+obj = {value: 2, toString(){return 4}}
+obj+1 //=> 5
+obj = {value: 2}
+obj+1 //=> "[object Object]1"
+```
+## RegExp
+
+### exec
+exec() 方法在一个指定字符串中执行一个搜索匹配。返回一个结果数组或 null。
+当正则表达式使用 "g" 标志时，可以多次执行 exec 方法来查找同一个字符串中的成功匹配。当你这样做时，查找将从正则表达式的 lastIndex 属性指定的位置开始。
+属性、索引|描述
+--|--
+`[0]`|匹配的全部字符串
+`[1], ...[n ]`|括号中的分组捕获
+`index`|匹配到的字符位于原始字符串的基于0的索引值
+`input`|原始字符串
+
+```js
+reg=/ssd/g
+str='123ssd445678ssd'
+console.log(reg.exec(str)) // => ["ssd", index: 3, input: "123ssd445678ssd", groups: undefined]
+console.log(reg.exec(str)) // => ["ssd", index: 12, input: "123ssd445678ssd", groups: undefined]
+console.log(reg.exec(str)) // => null
+console.log(reg.exec(str)) // => ["ssd", index: 3, input: "123ssd445678ssd", groups: undefined]
+
+reg=/(\d+)([a-z]+)/g
+str='123ssd445678ssd'
+console.log(reg.exec(str)) // => ["123ssd", "123", "ssd", index: 0, input: "123ssd445678ssd", groups: undefined]
+console.log(reg.exec(str)) // => ["445678ssd", "445678", "ssd", index: 6, input: "123ssd445678ssd", groups: undefined]
+console.log(reg.exec(str)) // => null
+console.log(reg.exec(str)) // => ["123ssd", "123", "ssd", index: 0, input: "123ssd445678ssd", groups: undefined]
+```
+### `RegExp.lastIndex`
+lastIndex 是正则表达式的一个可读可写的整型属性，用来指定下一次匹配的起始索引。只有正则表达式使用了表示全局检索的 "g" 标志时，该属性才会起作用。
+- 如果 lastIndex 大于字符串的长度，则 regexp.test 和 regexp.exec 将会匹配失败，然后 lastIndex 被设置为 0。
+- 如果 lastIndex 等于字符串的长度，且该正则表达式匹配空字符串，则该正则表达式匹配从 lastIndex 开始的字符串。（then the regular expression matches input starting at lastIndex.）
+- 如果 lastIndex 等于字符串的长度，且该正则表达式不匹配空字符串 ，则该正则表达式不匹配字符串，lastIndex 被设置为 0.。
+- 否则，lastIndex 被设置为紧随最近一次成功匹配的下一个位置。
+
+### RegExp.prototype[Symbol.matchAll]
+返回一个迭代器。
+```js
+var re = /[0-9]+/g;
+var str = '2016-01-02';
+var result = re[Symbol.matchAll](str);
+
+console.log(Array.from(result, x => x[0])); 
+// ["2016", "01", "02"]
+```
+### RegExp.prototype[Symbol.match]
+返回一个数组，它包括整个匹配结果，和通过捕获组匹配到的结果，如果没有匹配到则返回null
+```js
+var re = /[0-9]+/g;
+var str = '2016-01-02';
+var result = re[Symbol.match](str);
+console.log(result);  // ["2016", "01", "02"]
+```
+密码强度正则，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
+`/^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/`
+
+## window
+[document与window的区别](https://blog.csdn.net/qq_41805715/article/details/89042363)
+### `alert`、`confirm`、`prompt`
+
+### Navigator
+`userAgent`
+```
+chrome:
+    Mozilla/5.0 
+    (Macintosh; Intel Mac OS X 10_12_6) 
+    AppleWebKit/537.36 (KHTML, like Gecko) 
+    Chrome/61.0.3163.91 Safari/537.36
+safari:
+    Mozilla/5.0 
+    (Macintosh; Intel Mac OS X 10_12_6) 
+    AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 
+    Safari/604.1.38
+ios11刘海X:
+    Mozilla/5.0 
+    (iPhone; CPU iPhone OS 11_0 like Mac OS X) 
+    AppleWebKit/604.1.38 (KHTML, like Gecko) 
+    Version/11.0 Mobile/15A372 Safari/604.1
+ipad：
+    Mozilla/5.0 
+    (iPad; CPU OS 9_1 like Mac OS X) 
+    AppleWebKit/601.1.46 (KHTML, like Gecko)
+    Version/9.0 Mobile/13B143 Safari/601.1
+galxy sansum:
+    Mozilla/5.0 
+    (Linux; Android 5.0; SM-G900P Build/LRX21T) 
+    AppleWebKit/537.36 (KHTML, like Gecko) 
+    Chrome/61.0.3163.91 Mobile Safari/537.36
+安装uc浏览器：
+    Mozilla/5.0 
+    (Linux; U; Android 6.0.1; zh-CN; Mi Note 2 Build/MXB48T)
+    AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 
+    Chrome/40.0.2214.89 UCBrowser/11.4.9.941 Mobile Safari/537.36
+winphone:
+    Mozilla/5.0 
+    (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) 
+    AppleWebKit/537.36 (KHTML, like Gecko) 
+    Chrome/61.0.3163.91 Mobile Safari/537.36
+hybrid方法的可能：
+    Mozilla/5.0 
+    (iPhone; CPU iPhone OS 11_0 like Mac OS X) 
+    AppleWebKit/604.1.38 (KHTML, like Gecko) 
+    Mobile/15A372 weibo/80011134
+```
+
+### iframe
+contentDocument 容纳框架的内容的文档。
+window.frames  frameList是一个frame对象的集合，它类似一个数组，有length属性且可以使用索引（[i]）来访问。
+window.parent 返回当前窗口的父窗口对象
+window.top 最顶层的窗口对象
+
+### location
+- assign
+- replace
+- href
+
+
 
 
 

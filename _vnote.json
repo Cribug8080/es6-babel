@@ -8,6 +8,15 @@
     "sub_directories": [
         {
             "name": "change"
+        },
+        {
+            "name": "algorithm"
+        },
+        {
+            "name": "offer"
+        },
+        {
+            "name": "engine"
         }
     ],
     "tags": [

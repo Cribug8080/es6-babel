@@ -4,3 +4,5 @@ vnote_backup_file_826537664 /Users/apple/Documents/vnote_notebooks/es6-babel/cha
 - then方法指定的回调函数，如果运行中抛出错误，也会被catch方法捕获。如果没有使用catch方法指定错误处理的回调函数，Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应
 - Promise 内部的错误不会影响到 Promise 外部的代码，通俗的说法就是“Promise 会吃掉错误”。不过，Node 有一个unhandledRejection事件，专门监听未捕获的reject错误，上面的脚本会触发这个事件的监听函数，可以在监听函数里面抛出错误。
 - 除了for...of循环以外，扩展运算符（...）、解构赋值和Array.from方法内部调用的，都是遍历器接口。这意味着，它们都可以将 Generator 函数返回的 Iterator 对象，作为参数。
+- 闭包是指有权访问另外一个函数作用域中的变量的函数。闭包是指那些能够访问自由变量的函数。
+- jpa
