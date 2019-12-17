@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="VNote">
+
+    <title>byte-dounce</title>
+    <link rel="icon" href="https://github.com/tamlok/vnote/raw/master/src/resources/icons/vnote.ico">
+
+    <style type="text/css">
+    /* STYLE_GLOBAL_PLACE_HOLDER */
+    </style>
+
+    <style type="text/css">
+    *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-12 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .col-md-3 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-9 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 75%;
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-xl-2 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 16.666667%;
+        flex: 0 0 16.666667%;
+        max-width: 16.666667%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-xl-10 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+}
+
+@media (min-width: 768px) {
+    .pt-md-3, .py-md-3 {
+        padding-top: 1rem!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .pb-md-3, .py-md-3 {
+        padding-bottom: 1rem!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .pl-md-5, .px-md-5 {
+        padding-left: 3rem!important;
+    }
+}
+
+.d-none {
+    display: none!important;
+}
+
+@media (min-width: 1200px) {
+    .d-xl-block {
+        display: block!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .d-md-block {
+        display: block!important;
+    }
+}
+
+.bd-content {
+    -webkit-box-ordinal-group: 1;
+    -ms-flex-order: 0;
+    order: 0;
+}
+
+.bd-toc {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+    height: calc(100vh - 10rem);
+    overflow-y: auto;
+}
+
+.bd-toc {
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 1;
+    order: 1;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-size: .875rem;
+}
+
+.section-nav {
+    padding-left: 0;
+}
+
+.section-nav ul {
+    font-size: .875rem;
+    list-style-type: none;
+}
+
+.section-nav li {
+    font-size: .875rem;
+}
+
+.section-nav a {
+    color: inherit !important;
+}
+
+.row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+@media (min-width: 1200px) {
+    .flex-xl-nowrap {
+        flex-wrap: nowrap !important;
+    }
+}
+
+#floating-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: #00897B;
+    position: fixed;
+    top: .5rem;
+    right: .5rem;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px #666;
+}
+
+#floating-button .more {
+    color: #F5F5F5;
+    position: absolute;
+    top: 0;
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    line-height: 2.5rem;
+    font-size: 2rem;
+    font-family: 'monospace';
+    font-weight: 300;
+}
+
+.hide-none {
+    display: none !important;
+}
+
+.col-expand {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding-right: 3rem !important;
+}
+
+.outline-bold {
+    font-weight: bolder !important;
+}
+
+@media print {
+    #floating-button {
+        display: none !important;
+    }
+}
+
+    @keyframes flash { 
+  0% { color: rgb(128, 203, 196); }
+  10% { color: rgb(0, 137, 123); }
+  40% { color: rgb(0, 137, 123); }
+  50% { color: rgb(128, 203, 196); }
+  60% { color: rgb(0, 137, 123); }
+  90% { color: rgb(0, 137, 123); }
+}
+.highlighted-anchor { animation: flash 1s; }
+div.mark-rect { background: transparent; border: 5px solid rgb(87, 104, 196); border-radius: 2px; position: absolute; }
+#vnote-footer { width: 100%; text-align: center; opacity: 0.2; margin-top: 3rem; }
+#vnote-footer p { font-size: 0.8rem; }
+#vnote-footer a { color: inherit !important; }
+x-eqs { display: flex; flex-direction: row; align-content: space-between; align-items: center; }
+x-eqs > x-eqn { width: 100%; margin-left: 3rem; }
+x-eqs > span { text-align: right; }
+.view-image, .view-svg { transition: 0.3s; }
+.modal-box { display: none; position: fixed; z-index: 1000; padding-top: 50px; left: 0px; top: 0px; width: 100%; height: 100%; overflow: hidden; background-color: rgba(68, 68, 68, 0.952941); }
+.modal-content { margin: auto; display: block; width: auto; height: auto; cursor: move; }
+.modal-content { animation-name: zoom; animation-duration: 0.6s; }
+@-webkit-keyframes zoom { 
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+@keyframes zoom { 
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+span.modal-close { position: absolute; z-index: 1000; top: 15px; right: 35px; color: rgb(218, 218, 218); font-size: 40px; font-weight: bold; transition: 0.3s; }
+span.modal-close:hover, span.modal-close:focus { color: rgb(238, 238, 238); text-decoration: none; cursor: pointer; }
+@media print {
+  pre, pre code, td.hljs-ln-code { white-space: pre-wrap !important; word-break: break-all !important; }
+  code, a { word-break: break-all !important; }
+  div.flowchart-diagram, div.mermaid-diagram, div.plantuml-diagram { overflow: hidden !important; }
+  img { max-width: 100% !important; height: auto !important; }
+  #vnote-footer { display: none !important; }
+}
+.alert { position: relative; padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: 0.25rem; }
+.alert-primary { color: rgb(0, 64, 133); background-color: rgb(204, 229, 255); border-color: rgb(184, 218, 255); }
+.alert-secondary { color: rgb(56, 61, 65); background-color: rgb(226, 227, 229); border-color: rgb(214, 216, 219); }
+.alert-success { color: rgb(21, 87, 36); background-color: rgb(212, 237, 218); border-color: rgb(195, 230, 203); }
+.alert-info { color: rgb(12, 84, 96); background-color: rgb(209, 236, 241); border-color: rgb(190, 229, 235); }
+.alert-warning { color: rgb(133, 100, 4); background-color: rgb(255, 243, 205); border-color: rgb(255, 238, 186); }
+.alert-danger { color: rgb(114, 28, 36); background-color: rgb(248, 215, 218); border-color: rgb(245, 198, 203); }
+.alert-light { color: rgb(129, 129, 130); background-color: rgb(254, 254, 254); border-color: rgb(253, 253, 254); }
+.alert-dark { color: rgb(27, 30, 33); background-color: rgb(214, 216, 217); border-color: rgb(198, 200, 202); }
+.vnote-anchor { font-weight: 400; color: rgba(0, 123, 255, 0.498039); transition: color 0.16s linear; padding-left: 0.375em; -webkit-font-smoothing: antialiased; text-decoration: none; opacity: 0; }
+.vnote-anchor:hover { color: rgb(0, 123, 255); text-decoration: none; opacity: 1; }
+.vnote-anchor::after { content: attr(data-anchor-icon); }
+body { margin: 0px auto; font-family: "Segoe UI", Helvetica, sans-serif, Tahoma, Arial, Geneva, Georgia, Palatino, "Times New Roman", "Hiragino Sans GB", 冬青黑体, "Microsoft YaHei", 微软雅黑, "Microsoft YaHei UI", "WenQuanYi Micro Hei", 文泉驿雅黑, Dengxian, 等线体, STXihei, 华文细黑, "Liberation Sans", "Droid Sans", NSimSun, 新宋体, SimSun, 宋体; color: rgb(34, 34, 34); line-height: 1.5; padding: 15px; background: rgb(238, 238, 238); font-size: 16px; }
+h1, h2, h3, h4, h5, h6 { color: rgb(34, 34, 34); font-weight: bold; margin-top: 20px; margin-bottom: 10px; padding: 0px; }
+p { padding: 0px; margin-top: 16px; margin-bottom: 16px; }
+h1 { font-size: 26px; }
+h2 { font-size: 24px; }
+h3 { font-size: 22px; }
+h4 { font-size: 20px; }
+h5 { font-size: 19px; }
+h6 { font-size: 18px; }
+a { color: rgb(0, 153, 255); margin: 0px; padding: 0px; vertical-align: baseline; text-decoration: none; word-break: break-all; }
+a:hover { text-decoration: underline; color: rgb(255, 102, 0); }
+a:visited { color: purple; }
+ul, ol { padding: 0px 0px 0px 24px; }
+li { line-height: 24px; }
+li ul, li ol { margin-left: 16px; }
+p, ul, ol { font-size: 16px; line-height: 24px; }
+pre { display: block; overflow-y: hidden; overflow-x: auto; tab-size: 4; }
+code { font-family: Consolas, Monaco, monospace, Courier; color: rgb(142, 36, 170); word-break: break-all; }
+pre code { display: block; overflow-x: auto; padding: 0.5em; color: rgb(34, 34, 34); background-color: rgb(224, 224, 224); border-left: 0.5em solid rgb(0, 137, 123); line-height: 1.5; font-family: Consolas, Monaco, monospace, Courier; white-space: pre; tab-size: 4; }
+pre code.markdown-metadata { border-left: 0.5em solid rgb(128, 203, 196); }
+aside { display: block; float: right; width: 390px; }
+blockquote { color: rgb(102, 102, 102); border-left: 0.5em solid rgb(122, 122, 122); padding: 0px 1em; margin-left: 0px; }
+blockquote p { color: rgb(102, 102, 102); }
+hr { display: block; text-align: left; margin: 1em 0px; border: none; height: 2px; background: rgb(153, 153, 153); }
+table { padding: 0px; margin: 1rem 0.5rem; border-collapse: collapse; }
+table tr { border-top: 2px solid rgb(204, 204, 204); background-color: white; margin: 0px; padding: 0px; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 2px solid rgb(204, 204, 204); margin: 0px; padding: 6px 13px; }
+table tr td { border: 2px solid rgb(204, 204, 204); margin: 0px; padding: 6px 13px; }
+table tr th :first-child, table tr td :first-child { margin-top: 0px; }
+table tr th :last-child, table tr td :last-child { margin-bottom: 0px; }
+div.mermaid-diagram { margin: 16px 0px; overflow-y: hidden; }
+div.flowchart-diagram { padding: 0px 5px; margin: 16px 0px; width: fit-content; overflow: hidden; }
+div.wavedrom-diagram { padding: 0px 5px; margin: 16px 0px; width: fit-content; overflow: hidden; }
+div.plantuml-diagram { padding: 5px 5px 0px; margin: 16px 0px; width: fit-content; overflow: hidden; }
+.img-package { text-align: center; }
+img.img-center { display: block; margin-left: auto; margin-right: auto; }
+span.img-caption { min-width: 20%; max-width: 80%; display: inline-block; padding: 10px; margin: 0px auto; border-bottom: 1px solid rgb(192, 192, 192); color: rgb(108, 108, 108); text-align: center; line-height: 1.5; }
+.emoji_zero, .emoji_one, .emoji_two, .emoji_three, .emoji_four, .emoji_five, .emoji_six, .emoji_seven, .emoji_eight, .emoji_nine { margin-left: 5px; margin-right: 8px; }
+div.preview-hint { opacity: 0.5; margin-top: 30%; margin-bottom: 30%; align-items: center; display: flex; flex-direction: column; justify-content: center; }
+table.hljs-ln tr { border: none; background-color: transparent; }
+table.hljs-ln tr td { border: none; background-color: transparent; }
+table.hljs-ln tr td.hljs-ln-numbers { user-select: none; text-align: center; color: rgb(170, 170, 170); border-right: 1px solid rgb(204, 204, 204); vertical-align: top; padding-right: 5px; white-space: nowrap; }
+table.hljs-ln tr td.hljs-ln-code { padding-left: 10px; }
+::-webkit-scrollbar { background-color: rgb(234, 234, 234); width: 14px; height: 14px; border: none; }
+::-webkit-scrollbar-corner { background-color: rgb(234, 234, 234); }
+::-webkit-scrollbar-button { height: 14px; width: 14px; background-color: rgb(234, 234, 234); }
+::-webkit-scrollbar-button:hover { background-color: rgb(208, 208, 208); }
+::-webkit-scrollbar-button:active { background-color: rgb(178, 178, 178); }
+::-webkit-scrollbar-track { background-color: rgb(234, 234, 234); }
+::-webkit-scrollbar-thumb { border: none; background-color: rgb(218, 218, 218); }
+::-webkit-scrollbar-thumb:hover { background-color: rgb(208, 208, 208); }
+::-webkit-scrollbar-thumb:active { background-color: rgb(178, 178, 178); }
+::-webkit-scrollbar-button:horizontal:increment { background-image: url('data:image/svg+xml;utf8,<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <g>    <g transform="rotate(-90 256.00000000000006,256) " id="svg_1">   <polygon fill="%23333333" id="svg_2" points="128,192 256,320 384,192  "/>  </g> </g></svg>'); background-repeat: no-repeat; background-size: contain; }
+::-webkit-scrollbar-button:horizontal:decrement { background-image: url('data:image/svg+xml;utf8,<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <g>    <g transform="rotate(90 255.99999999999997,256.00000000000006) " id="svg_1">   <polygon points="128,192 256,320 384,192  " id="svg_2" fill="%23333333"/>  </g> </g></svg>'); background-repeat: no-repeat; background-size: contain; }
+::-webkit-scrollbar-button:vertical:increment { background-image: url('data:image/svg+xml;utf8,<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <g>    <g transform="null" id="svg_1">   <polygon points="128,192 256,320 384,192  " id="svg_2" fill="%23333333"/>  </g> </g></svg>'); background-repeat: no-repeat; background-size: contain; }
+::-webkit-scrollbar-button:vertical:decrement { background-image: url('data:image/svg+xml;utf8,<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"> <g>    <g transform="rotate(180 255.99999999999997,256) " id="svg_1">   <polygon points="128,192 256,320 384,192  " id="svg_2" fill="%23333333"/>  </g> </g></svg>'); background-repeat: no-repeat; background-size: contain; }
+::selection { background: rgb(25, 118, 210); color: rgb(238, 238, 238); }
+.modal-box { background-color: rgba(234, 234, 234, 0.952941); }
+span.modal-close { color: rgb(102, 102, 102); }
+span.modal-close:hover, span.modal-close:focus { color: rgb(34, 34, 34); }
+.hljs { display: block; overflow-x: auto; padding: 0.5em; background: rgb(224, 224, 224); }
+.hljs, .hljs-subst { color: rgb(54, 54, 54); }
+.hljs-comment { color: rgb(118, 118, 118); }
+.hljs-keyword, .hljs-attribute, .hljs-selector-tag, .hljs-meta-keyword, .hljs-doctag, .hljs-name { color: rgb(0, 0, 238); }
+.hljs-type, .hljs-string, .hljs-number, .hljs-selector-id, .hljs-selector-class, .hljs-quote, .hljs-template-tag, .hljs-deletion { color: rgb(136, 0, 0); }
+.hljs-title, .hljs-section { color: rgb(136, 0, 0); font-weight: bold; }
+.hljs-regexp, .hljs-symbol, .hljs-variable, .hljs-template-variable, .hljs-link, .hljs-selector-attr, .hljs-selector-pseudo { color: rgb(188, 96, 96); }
+.hljs-literal { color: rgb(175, 0, 215); }
+.hljs-built_in, .hljs-bullet, .hljs-code, .hljs-addition { color: rgb(0, 135, 0); }
+.hljs-meta { color: rgb(31, 113, 153); }
+.hljs-meta-string { color: rgb(77, 153, 191); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: bold; }
+.mermaid-diagram .mermaid .label { color: rgb(51, 51, 51); }
+.mermaid-diagram .node rect, .mermaid-diagram .node circle, .mermaid-diagram .node ellipse, .mermaid-diagram .node polygon { fill: rgb(236, 236, 255); stroke: rgb(204, 204, 255); stroke-width: 1px; }
+.mermaid-diagram .edgePath .path { stroke: rgb(51, 51, 51); }
+.mermaid-diagram .edgeLabel { background-color: rgb(232, 232, 232); }
+.mermaid-diagram .cluster rect { fill: rgb(255, 255, 222) !important; rx: 4 !important; stroke: rgb(170, 170, 51) !important; stroke-width: 1px !important; }
+.mermaid-diagram .cluster text { fill: rgb(51, 51, 51); }
+.mermaid-diagram .actor { stroke: rgb(204, 204, 255); fill: rgb(236, 236, 255); }
+.mermaid-diagram text.actor { fill: black; stroke: none; }
+.mermaid-diagram .actor-line { stroke: grey; }
+.mermaid-diagram .messageLine0 { stroke-width: 1.5; stroke: rgb(51, 51, 51); }
+.mermaid-diagram .messageLine1 { stroke-width: 1.5; stroke: rgb(51, 51, 51); }
+.mermaid-diagram #arrowhead { fill: rgb(51, 51, 51); }
+.mermaid-diagram #crosshead path { fill: rgb(51, 51, 51) !important; stroke: rgb(51, 51, 51) !important; }
+.mermaid-diagram .messageText { fill: rgb(51, 51, 51); stroke: none; }
+.mermaid-diagram .labelBox { stroke: rgb(204, 204, 255); fill: rgb(236, 236, 255); }
+.mermaid-diagram .labelText { fill: black; stroke: none; }
+.mermaid-diagram .loopText { fill: black; stroke: none; }
+.mermaid-diagram .loopLine { stroke-width: 2; stroke: rgb(204, 204, 255); }
+.mermaid-diagram .note { stroke: rgb(170, 170, 51); fill: rgb(255, 245, 173); }
+.mermaid-diagram .noteText { fill: black; stroke: none; font-family: "trebuchet ms", verdana, arial; font-size: 14px; }
+.mermaid-diagram .section { stroke: none; opacity: 0.2; }
+.mermaid-diagram .section0 { fill: rgba(102, 102, 255, 0.490196); }
+.mermaid-diagram .section2 { fill: rgb(255, 244, 0); }
+.mermaid-diagram .section1, .mermaid-diagram .section3 { fill: white; opacity: 0.2; }
+.mermaid-diagram .sectionTitle0 { fill: rgb(51, 51, 51); }
+.mermaid-diagram .sectionTitle1 { fill: rgb(51, 51, 51); }
+.mermaid-diagram .sectionTitle2 { fill: rgb(51, 51, 51); }
+.mermaid-diagram .sectionTitle3 { fill: rgb(51, 51, 51); }
+.mermaid-diagram .sectionTitle { text-anchor: start; font-size: 11px; }
+.mermaid-diagram .grid .tick { stroke: lightgrey; opacity: 0.3; shape-rendering: crispEdges; }
+.mermaid-diagram .grid path { stroke-width: 0; }
+.mermaid-diagram .today { fill: none; stroke: red; stroke-width: 2px; }
+.mermaid-diagram .task { stroke-width: 2; }
+.mermaid-diagram .taskText { text-anchor: middle; font-size: 11px; }
+.mermaid-diagram .taskTextOutsideRight { fill: black; text-anchor: start; font-size: 11px; }
+.mermaid-diagram .taskTextOutsideLeft { fill: black; text-anchor: end; font-size: 11px; }
+.mermaid-diagram .taskText0, .mermaid-diagram .taskText1, .mermaid-diagram .taskText2, .mermaid-diagram .taskText3 { fill: white; }
+.mermaid-diagram .task0, .mermaid-diagram .task1, .mermaid-diagram .task2, .mermaid-diagram .task3 { fill: rgb(138, 144, 221); stroke: rgb(83, 79, 188); }
+.mermaid-diagram .taskTextOutside0, .mermaid-diagram .taskTextOutside2 { fill: black; }
+.mermaid-diagram .taskTextOutside1, .mermaid-diagram .taskTextOutside3 { fill: black; }
+.mermaid-diagram .active0, .mermaid-diagram .active1, .mermaid-diagram .active2, .mermaid-diagram .active3 { fill: rgb(191, 199, 255); stroke: rgb(83, 79, 188); }
+.mermaid-diagram .activeText0, .mermaid-diagram .activeText1, .mermaid-diagram .activeText2, .mermaid-diagram .activeText3 { fill: black !important; }
+.mermaid-diagram .done0, .mermaid-diagram .done1, .mermaid-diagram .done2, .mermaid-diagram .done3 { stroke: grey; fill: lightgrey; stroke-width: 2; }
+.mermaid-diagram .doneText0, .mermaid-diagram .doneText1, .mermaid-diagram .doneText2, .mermaid-diagram .doneText3 { fill: black !important; }
+.mermaid-diagram .crit0, .mermaid-diagram .crit1, .mermaid-diagram .crit2, .mermaid-diagram .crit3 { stroke: rgb(255, 136, 136); fill: red; stroke-width: 2; }
+.mermaid-diagram .activeCrit0, .mermaid-diagram .activeCrit1, .mermaid-diagram .activeCrit2, .mermaid-diagram .activeCrit3 { stroke: rgb(255, 136, 136); fill: rgb(191, 199, 255); stroke-width: 2; }
+.mermaid-diagram .doneCrit0, .mermaid-diagram .doneCrit1, .mermaid-diagram .doneCrit2, .mermaid-diagram .doneCrit3 { stroke: rgb(255, 136, 136); fill: lightgrey; stroke-width: 2; cursor: pointer; shape-rendering: crispEdges; }
+.mermaid-diagram .doneCritText0, .mermaid-diagram .doneCritText1, .mermaid-diagram .doneCritText2, .mermaid-diagram .doneCritText3 { fill: black !important; }
+.mermaid-diagram .activeCritText0, .mermaid-diagram .activeCritText1, .mermaid-diagram .activeCritText2, .mermaid-diagram .activeCritText3 { fill: black !important; }
+.mermaid-diagram .titleText { text-anchor: middle; font-size: 18px; fill: black; }
+.mermaid-diagram .node text { font-family: "trebuchet ms", verdana, arial; font-size: 14px; }
+.mermaid-diagram div.mermaidTooltip { position: absolute; text-align: center; max-width: 200px; padding: 2px; font-family: "trebuchet ms", verdana, arial; font-size: 12px; background: rgb(255, 255, 222); border: 1px solid rgb(170, 170, 51); border-radius: 2px; pointer-events: none; z-index: 100; }
+.MathJax_Hover_Frame { border-radius: 0.25em; box-shadow: rgb(136, 51, 170) 0px 0px 15px; display: inline-block; position: absolute; border: 1px solid rgb(170, 102, 221) !important; }
+.MathJax_Menu_Button .MathJax_Hover_Arrow { position: absolute; cursor: pointer; display: inline-block; border: 2px solid rgb(170, 170, 170); border-radius: 4px; font-family: "Courier New", Courier; font-size: 9px; color: rgb(240, 240, 240); }
+.MathJax_Menu_Button .MathJax_Hover_Arrow span { display: block; background-color: rgb(170, 170, 170); border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px; }
+.MathJax_Hover_Arrow:hover { color: white !important; border: 2px solid rgb(204, 204, 204) !important; }
+.MathJax_Hover_Arrow:hover span { background-color: rgb(204, 204, 204) !important; }
+#MathJax_About { position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: rgb(221, 221, 221); color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; box-shadow: rgb(128, 128, 128) 0px 10px 20px; }
+#MathJax_About.MathJax_MousePost { outline: none; }
+.MathJax_Menu { position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid rgb(204, 204, 204); margin: 0px; cursor: default; font-style: normal; font-weight: normal; font-size: 13px; font-family: system-ui; font-stretch: normal; font-variant: normal; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; box-shadow: rgb(128, 128, 128) 0px 10px 20px; }
+.MathJax_MenuItem { padding: 1px 2em; background: transparent; }
+.MathJax_MenuArrow { position: absolute; right: 0.5em; padding-top: 0.25em; color: rgb(102, 102, 102); font-size: 0.75em; }
+.MathJax_MenuActive .MathJax_MenuArrow { color: white; }
+.MathJax_MenuArrow.RTL { left: 0.5em; right: auto; }
+.MathJax_MenuCheck { position: absolute; left: 0.7em; }
+.MathJax_MenuCheck.RTL { right: 0.7em; left: auto; }
+.MathJax_MenuRadioCheck { position: absolute; left: 0.7em; }
+.MathJax_MenuRadioCheck.RTL { right: 0.7em; left: auto; }
+.MathJax_MenuLabel { padding: 1px 2em 3px 1.33em; font-style: italic; }
+.MathJax_MenuRule { border-top: 1px solid rgb(221, 221, 221); margin: 4px 3px; }
+.MathJax_MenuDisabled { color: graytext; }
+.MathJax_MenuActive { background-color: rgb(96, 104, 114); color: white; }
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus { background-color: rgb(232, 232, 232); }
+.MathJax_ContextMenu:focus { outline: none; }
+.MathJax_ContextMenu .MathJax_MenuItem:focus { outline: none; }
+#MathJax_AboutClose { top: 0.2em; right: 0.2em; }
+.MathJax_Menu .MathJax_MenuClose { top: -10px; left: -10px; }
+.MathJax_MenuClose { position: absolute; cursor: pointer; display: inline-block; border: 2px solid rgb(170, 170, 170); border-radius: 18px; font-family: "Courier New", Courier; font-size: 24px; color: rgb(240, 240, 240); }
+.MathJax_MenuClose span { display: block; background-color: rgb(170, 170, 170); border: 1.5px solid; border-radius: 18px; line-height: 0; padding: 8px 0px 6px; }
+.MathJax_MenuClose:hover { color: white !important; border: 2px solid rgb(204, 204, 204) !important; }
+.MathJax_MenuClose:hover span { background-color: rgb(204, 204, 204) !important; }
+.MathJax_MenuClose:hover:focus { outline: none; }
+.MathJax_Preview .MJXf-math { color: inherit !important; }
+.MJX_Assistive_MathML { top: 0px; left: 0px; clip: rect(1px 1px 1px 1px); user-select: none; position: absolute !important; padding: 1px 0px 0px !important; border: 0px !important; height: 1px !important; width: 1px !important; overflow: hidden !important; display: block !important; }
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block { width: 100% !important; }
+#MathJax_Zoom { position: absolute; background-color: rgb(240, 240, 240); overflow: auto; display: block; z-index: 301; padding: 0.5em; border: 1px solid black; margin: 0px; font-weight: normal; font-style: normal; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; box-sizing: content-box; box-shadow: rgb(170, 170, 170) 5px 5px 15px; }
+#MathJax_ZoomOverlay { position: absolute; left: 0px; top: 0px; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0px; padding: 0px; margin: 0px; background-color: white; opacity: 0; }
+#MathJax_ZoomFrame { position: relative; display: inline-block; height: 0px; width: 0px; }
+#MathJax_ZoomEventTrap { position: absolute; left: 0px; top: 0px; z-index: 302; display: inline-block; border: 0px; padding: 0px; margin: 0px; background-color: white; opacity: 0; }
+.MathJax_Preview { color: rgb(136, 136, 136); }
+#MathJax_Message { position: fixed; left: 1px; bottom: 2px; background-color: rgb(230, 230, 230); border: 1px solid rgb(149, 149, 149); margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap; }
+#MathJax_MSIE_Frame { position: absolute; top: 0px; left: 0px; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px; }
+.MathJax_Error { color: rgb(204, 0, 0); font-style: italic; }
+.MJXp-script { font-size: 0.8em; }
+.MJXp-right { transform-origin: right center 0px; }
+.MJXp-bold { font-weight: bold; }
+.MJXp-italic { font-style: italic; }
+.MJXp-scr { font-family: MathJax_Script, "Times New Roman", Times, STIXGeneral, serif; }
+.MJXp-frak { font-family: MathJax_Fraktur, "Times New Roman", Times, STIXGeneral, serif; }
+.MJXp-sf { font-family: MathJax_SansSerif, "Times New Roman", Times, STIXGeneral, serif; }
+.MJXp-cal { font-family: MathJax_Caligraphic, "Times New Roman", Times, STIXGeneral, serif; }
+.MJXp-mono { font-family: MathJax_Typewriter, "Times New Roman", Times, STIXGeneral, serif; }
+.MJXp-largeop { font-size: 150%; }
+.MJXp-largeop.MJXp-int { vertical-align: -0.2em; }
+.MJXp-math { display: inline-block; line-height: 1.2; text-indent: 0px; font-family: "Times New Roman", Times, STIXGeneral, serif; white-space: nowrap; border-collapse: collapse; }
+.MJXp-display { display: block; text-align: center; margin: 1em 0px; }
+.MJXp-math span { display: inline-block; }
+.MJXp-box { text-align: center; display: block !important; }
+.MJXp-box::after { content: " "; }
+.MJXp-rule { margin-top: 0.1em; display: block !important; }
+.MJXp-char { display: block !important; }
+.MJXp-mo { margin: 0px 0.15em; }
+.MJXp-mfrac { margin: 0px 0.125em; vertical-align: 0.25em; }
+.MJXp-denom { width: 100%; display: inline-table !important; }
+.MJXp-denom > * { display: table-row !important; }
+.MJXp-surd { vertical-align: top; }
+.MJXp-surd > * { display: block !important; }
+.MJXp-script-box > * { height: 50%; display: table !important; }
+.MJXp-script-box > * > * { vertical-align: top; display: table-cell !important; }
+.MJXp-script-box > :last-child > * { vertical-align: bottom; }
+.MJXp-script-box > * > * > * { display: block !important; }
+.MJXp-mphantom { visibility: hidden; }
+.MJXp-munderover { display: inline-table !important; }
+.MJXp-over { text-align: center; display: inline-block !important; }
+.MJXp-over > * { display: block !important; }
+.MJXp-munderover > * { display: table-row !important; }
+.MJXp-mtable { vertical-align: 0.25em; margin: 0px 0.125em; }
+.MJXp-mtable > * { vertical-align: middle; display: inline-table !important; }
+.MJXp-mtr { display: table-row !important; }
+.MJXp-mtd { text-align: center; padding: 0.5em 0px 0px 0.5em; display: table-cell !important; }
+.MJXp-mtr > .MJXp-mtd:first-child { padding-left: 0px; }
+.MJXp-mtr:first-child > .MJXp-mtd { padding-top: 0px; }
+.MJXp-mlabeledtr { display: table-row !important; }
+.MJXp-mlabeledtr > .MJXp-mtd:first-child { padding-left: 0px; }
+.MJXp-mlabeledtr:first-child > .MJXp-mtd { padding-top: 0px; }
+.MJXp-merror { background-color: rgb(255, 255, 136); color: rgb(204, 0, 0); border: 1px solid rgb(204, 0, 0); padding: 1px 3px; font-style: normal; font-size: 90%; }
+.MJXp-scale0 { transform: scaleX(0); }
+.MJXp-scale1 { transform: scaleX(0.1); }
+.MJXp-scale2 { transform: scaleX(0.2); }
+.MJXp-scale3 { transform: scaleX(0.3); }
+.MJXp-scale4 { transform: scaleX(0.4); }
+.MJXp-scale5 { transform: scaleX(0.5); }
+.MJXp-scale6 { transform: scaleX(0.6); }
+.MJXp-scale7 { transform: scaleX(0.7); }
+.MJXp-scale8 { transform: scaleX(0.8); }
+.MJXp-scale9 { transform: scaleX(0.9); }
+.MathJax_PHTML .noError { font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid; }
+
+    </style>
+
+    <script type="text/javascript">
+var toc = [];
+
+var setVisible = function(node, visible) {
+    var cl = 'hide-none';
+    if (visible) {
+        node.classList.remove(cl);
+    } else {
+        node.classList.add(cl);
+    }
+};
+
+var isVisible = function(node) {
+    var cl = 'hide-none';
+    return !node.classList.contains(cl);
+};
+
+var setPostContentExpanded = function(node, expanded) {
+    var cl = 'col-expand';
+    if (expanded) {
+        node.classList.add(cl);
+    } else {
+        node.classList.remove(cl);
+    }
+};
+
+var setOutlinePanelVisible = function(visible) {
+    var outlinePanel = document.getElementById('outline-panel');
+    var postContent = document.getElementById('post-content');
+
+    setVisible(outlinePanel, visible);
+    setPostContentExpanded(postContent, !visible);
+};
+
+var isOutlinePanelVisible = function() {
+    var outlinePanel = document.getElementById('outline-panel');
+    return isVisible(outlinePanel);
+};
+
+window.addEventListener('load', function() {
+    var outlinePanel = document.getElementById('outline-panel');
+    outlinePanel.style.display = 'initial';
+
+    var floatingContainer = document.getElementById('container-floating');
+    floatingContainer.style.display = 'initial';
+
+    var outlineContent = document.getElementById('outline-content');
+    var postContent = document.getElementById('post-content');
+
+    // Escape @text to Html.
+    var escapeHtml = function(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    // Fetch the outline.
+    var headers = postContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    toc = [];
+    for (var i = 0; i < headers.length; ++i) {
+        var header = headers[i];
+
+        toc.push({
+            level: parseInt(header.tagName.substr(1)),
+            anchor: header.id,
+            title: escapeHtml(header.textContent)
+        });
+    }
+
+    if (toc.length == 0) {
+        setOutlinePanelVisible(false);
+        setVisible(floatingContainer, false);
+        return;
+    }
+
+    var baseLevel = baseLevelOfToc(toc);
+    var tocTree = tocToTree(toPerfectToc(toc, baseLevel), baseLevel);
+
+    outlineContent.innerHTML = tocTree;
+    setOutlinePanelVisible(true);
+    setVisible(floatingContainer, true);
+});
+
+// Return the topest level of @toc, starting from 1.
+var baseLevelOfToc = function(p_toc) {
+    var level = -1;
+    for (i in p_toc) {
+        if (level == -1) {
+            level = p_toc[i].level;
+        } else if (level > p_toc[i].level) {
+            level = p_toc[i].level;
+        }
+    }
+
+    if (level == -1) {
+        level = 1;
+    }
+
+    return level;
+};
+
+// Handle wrong title levels, such as '#' followed by '###'
+var toPerfectToc = function(p_toc, p_baseLevel) {
+    var i;
+    var curLevel = p_baseLevel - 1;
+    var perfToc = [];
+    for (i in p_toc) {
+        var item = p_toc[i];
+
+        // Insert empty header.
+        while (item.level > curLevel + 1) {
+            curLevel += 1;
+            var tmp = { level: curLevel,
+                        anchor: '',
+                        title: '[EMPTY]'
+                      };
+            perfToc.push(tmp);
+        }
+
+        perfToc.push(item);
+        curLevel = item.level;
+    }
+
+    return perfToc;
+};
+
+var itemToHtml = function(item) {
+    return '<a href="#' + item.anchor + '" data="' + item.anchor + '">' + item.title + '</a>';
+};
+
+// Turn a perfect toc to a tree using <ul>
+var tocToTree = function(p_toc, p_baseLevel) {
+    var i;
+    var front = '<li>';
+    var ending = ['</li>'];
+    var curLevel = p_baseLevel;
+    for (i in p_toc) {
+        var item = p_toc[i];
+        if (item.level == curLevel) {
+            front += '</li>';
+            front += '<li>';
+            front += itemToHtml(item);
+        } else if (item.level > curLevel) {
+            // assert(item.level - curLevel == 1)
+            front += '<ul>';
+            ending.push('</ul>');
+            front += '<li>';
+            front += itemToHtml(item);
+            ending.push('</li>');
+            curLevel = item.level;
+        } else {
+            while (item.level < curLevel) {
+                var ele = ending.pop();
+                front += ele;
+                if (ele == '</ul>') {
+                    curLevel--;
+                }
+            }
+            front += '</li>';
+            front += '<li>';
+            front += itemToHtml(item);
+        }
+    }
+    while (ending.length > 0) {
+        front += ending.pop();
+    }
+    front = front.replace("<li></li>", "");
+    front = '<ul>' + front + '</ul>';
+    return front;
+};
+
+var toggleMore = function() {
+    if (toc.length == 0) {
+        return;
+    }
+
+    var p = document.getElementById('floating-more');
+    if (isOutlinePanelVisible()) {
+        p.textContent = '<';
+        setOutlinePanelVisible(false);
+    } else {
+        p.textContent = '>';
+        setOutlinePanelVisible(true);
+    }
+};
+
+window.addEventListener('scroll', function() {
+    if (toc.length == 0 || !isOutlinePanelVisible()) {
+        return;
+    }
+
+    var postContent = document.getElementById('post-content');
+    var scrollTop = document.documentElement.scrollTop
+                    || document.body.scrollTop
+                    || window.pageYOffset;
+    var eles = postContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+    if (eles.length == 0) {
+        return;
+    }
+
+    var idx = -1;
+    var biaScrollTop = scrollTop + 50;
+    for (var i = 0; i < eles.length; ++i) {
+        if (biaScrollTop >= eles[i].offsetTop) {
+            idx = i;
+        } else {
+            break;
+        }
+    }
+
+    var header = '';
+    if (idx != -1) {
+        header = eles[idx].id;
+    }
+
+    highlightItemOnlyInOutline(header);
+});
+
+var highlightItemOnlyInOutline = function(id) {
+    var cl = 'outline-bold';
+    var outlineContent = document.getElementById('outline-content');
+    var eles = outlineContent.querySelectorAll("a");
+    var target = null;
+    for (var i = 0; i < eles.length; ++i) {
+        var ele = eles[i];
+        if (ele.getAttribute('data') == id) {
+            target = ele;
+            ele.classList.add(cl);
+        } else {
+            ele.classList.remove(cl);
+        }
+    }
+
+    // TODO: scroll target into view within the outline panel scroll area.
+};
+
+</script>
+
+
+<!-- HEAD_PLACE_HOLDER -->
+</head>
+<body>
+<div class="container-fluid">
+<div class="row flex-xl-nowrap">
+    <div id="outline-panel" style="display:none;" class="d-none d-md-block d-xl-block col-md-3 col-xl-2 bd-toc">
+        <div id="outline-content" class="section-nav"></div>
+    </div>
+    <div id="post-content" class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content">
+    <ol>
+<li>什么是函数节流，为什么要使用函数节流，如何实现</li>
+<li>描述一下JS 的new操作符具体做了什么</li>
+<li>简述document和window两个对象区别</li>
+<li>从上至下先捕获然后从下至上冒泡</li>
+<li>函数柯里化</li>
+<li>TCP</li>
+<li>window.onload和document.ready的区别</li>
+<li>iframe，如何在页面中改变另一个iframe的样式</li>
+<li>尽可能多的方法隐藏一个html元素</li>
+<li>盒模型,IE盒模型和标准盒模型，如何改变</li>
+<li>深拷贝和浅拷贝的定义</li>
+</ol>
+<h2 id="toc_0">函数防抖 debounce---函数节流  throttle<a class="vnote-anchor" href="#toc_0" data-anchor-icon="#"></a></h2>
+<p>函数防抖，就是指触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。<br>
+函数节流，限制一个函数在一定时间内只能执行一次。</p>
+<h3 id="toc_1">应用场景<a class="vnote-anchor" href="#toc_1" data-anchor-icon="#"></a></h3>
+<p>函数防抖：</p>
+<ul>
+<li>搜索框搜索输入。只需用户最后一次输入完，再发送请求</li>
+<li>手机号、邮箱验证输入检测</li>
+<li>窗口大小Resize。只需窗口调整完成后，计算窗口大小。防止重复渲染。</li>
+</ul>
+<p>函数节流：</p>
+<ul>
+<li>滚动加载，加载更多或滚到底部监听</li>
+<li>谷歌搜索框，搜索联想功能</li>
+<li>高频点击提交，表单重复提交</li>
+</ul>
+<p>前端开发过程中，有一些事件或者函数，会被频繁地触发（短时间按内多次触发），最常见的例如，onresize，scroll，mousemove ,mousehover 等，这些事件的触发频率很高，不做限制的话，有可能一秒之内执行几十次、几百次，如果在这些函数内部执行了其他函数</p>
+<h2 id="toc_2">深拷贝和浅拷贝的定义<a class="vnote-anchor" href="#toc_2" data-anchor-icon="#"></a></h2>
+<blockquote>
+<p>浅拷贝:<br>
+创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，拷贝的就是基本类型的值，如果属性是引用类型，拷贝的就是内存地址 ，所以如果其中一个对象改变了这个地址，就会影响到另一个对象。<br>
+深拷贝：<br>
+将一个对象从内存中完整的拷贝一份出来,从堆内存中开辟一个新的区域存放新对象,且修改新对象不会影响原对象</p>
+</blockquote>
+<h3 id="toc_3">乞丐版<a class="vnote-anchor" href="#toc_3" data-anchor-icon="#"></a></h3>
+<p><code>JSON.parse(JSON.stringify());</code></p>
+<h3 id="toc_4">生化版本<a class="vnote-anchor" href="#toc_4" data-anchor-icon="#"></a></h3>
+<ul>
+<li>深层次拷贝，使用递归</li>
+<li>考虑数组</li>
+<li>循环引用</li>
+<li>性能优化while -- forin -- for</li>
+<li>其他数据类型（<code>Boolean</code>、<code>String</code>、<code>Number</code>、<code>null</code>、<code>undefined</code>、<code>Symbol</code>、<code>function</code>、<code>object</code>） <code>Object.prototype.toString.call(target)</code></li>
+<li>特殊对象 （<code>regexp</code>、<code>、</code>、<code>、</code>、<code>、</code>、）</li>
+</ul>
+<h2 id="toc_5">JS 的new操作符具体做了什么<a class="vnote-anchor" href="#toc_5" data-anchor-icon="#"></a></h2>
+<ol>
+<li>我们创建了一个空对象obj</li>
+<li>我们将这个空对象的proto成员指向了Base函数对象prototype成员对象</li>
+<li>我们将Base函数对象的this指针替换成obj</li>
+</ol>
+<h2 id="toc_6">简述document和window两个对象区别<a class="vnote-anchor" href="#toc_6" data-anchor-icon="#"></a></h2>
+<p>window: 它是一个顶层对象<br>
+document: 是window和frames对象的一个属性</p>
+<h2 id="toc_7">从上至下先捕获然后从下至上冒泡<a class="vnote-anchor" href="#toc_7" data-anchor-icon="#"></a></h2>
+<p>DOM事件流和 event的三个阶段（冒泡，捕捉，目标）</p>
+<p><strong>基本概念</strong><br>
+event target 和 current event target</p>
+<ol>
+<li>event target: 点击谁谁就是event target</li>
+<li>current event target: 绑定给谁谁就是 current event target<br>
+capture、target、bubble phase</li>
+<li>捕获阶段capture：事件对象通过目标的祖先（windows）逐层往下遍历，直到target的父元素。这个过程就是捕获阶段。</li>
+<li>目标阶段target: 事件对象在目标的时候。（at target）.如果生命bubble属性不冒泡，则事件停止传播。</li>
+<li>冒泡阶段：事件对象反向（capture的反序），从目标的父元素开始往dom的祖先window传播。<br>
+<strong>事件三个阶段该如何理解?</strong><br>
+step1: 你点击了页面，一定点击了window。所以时间对象最开始是在windows窗体产生的，并沿着dom树向下传播，正常的时间要经历上面三个阶段（circle）。<br>
+step2: 在传播过程中会遇到body,div,p等元素，每个元素上都可能绑定了一个listener监听器，监听经过的click事件。但是默认情况下capture捕获阶段，事件的handler是不会触发执行（看到了敌军但是按兵不动）。<br>
+step3: 默认事件在冒泡阶段执行，冒泡是由内向外的，所以冒泡阶段时间执行的顺序也是由内向外的。你点击了div，如果父元素也有click事件的监听器。那么先执行子元素的click事件handler，然后执行父元素的handler。<br>
+step4: addEventListener第三个参数可以设定为ture，意思是改变触发handler的顺序。这个listener在capture阶段捕获到时间后就执行。捕获阶段是从外向内向的，所以这样的监听器就会先执行父元素的handler.</li>
+</ol>
+<p><strong>改变event flow</strong></p>
+<ol>
+<li>如果浏览器不支持其中某一个阶段，该阶段就被跳过。</li>
+<li>如果event.bubbles设定了false。冒泡阶段就不执行</li>
+<li>如果handler函数中调用了stopPropagation() ，那么三个阶段遇到此语句的时候就停止。</li>
+</ol>
+<p>onclick 冒泡阶段执行。获取event   <code>window.event.stopPropagation()</code></p>
+<p>通过addEventListener可以给给以元素绑定多个handler。比如一个click事件可以触发多个函数。此时函数执行的顺序就是绑定的顺序。这里并不涉及事件的三个阶段，也不存在冒泡过程。仅仅handler触发后，js函数执行顺序的问题</p>
+<h2 id="toc_8">JavaScript <a href="https://www.jianshu.com/p/667a20d008cf">事件循环机制</a><a class="vnote-anchor" href="#toc_8" data-anchor-icon="#"></a></h2>
+<p>javascript从诞生之日起就是一门单线程的非阻塞的脚本语言<br>
+单线程： 在执行的任何时候，都只有一个主线程来处理所有的任务<br>
+非阻塞：当代码需要进行一项异步任务的时候，主线程会挂起（pending）这个任务，然后在异步任务返回结果的时候再根据一定规则去执行相应的回调<br>
+试想一下 如果javascript是多线程的，那么当两个线程同时对dom进行一项操作，例如一个向其添加事件，而另一个删除了这个dom，此时该如何处理呢？因此，为了保证不会 发生类似于这个例子中的情景，javascript选择只用一个主线程来执行代码，这样就保证了程序执行的一致性。<br>
+<img src='data:image/png;base64,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' alt="webp" class="view-image"></p>
+<h2 id="toc_9"><a href="https://segmentfault.com/a/1190000012787829">MutationObserver</a>--MutationEvent<a class="vnote-anchor" href="#toc_9" data-anchor-icon="#"></a></h2>
+<p>变动观察器，字面上就可以理解这是用来观察Node（节点）变化的。</p>
+<pre><code class="lang-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">'target'</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'block'</span> <span class="hljs-attr">name</span>=<span class="hljs-string">'target'</span>&gt;</span>
+    target的第一个子节点
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>target的后代<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+    <span class="hljs-keyword">var</span> target=<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'target'</span>);
+    <span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>
+    <span class="hljs-keyword">var</span> observe=<span class="hljs-keyword">new</span> MutationObserver(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">mutations,observe</span>) </span>{
+        i++  
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'MutationObserver'</span>, i)  <span class="hljs-comment">// =&gt; 1</span>
+    });
+    observe.observe(target,{ <span class="hljs-attr">childList</span>: <span class="hljs-literal">true</span>});
+    target.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">'1'</span>));
+    target.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">'2'</span>));
+    target.appendChild(<span class="hljs-built_in">document</span>.createTextNode(<span class="hljs-string">'3'</span>));
+    <span class="hljs-built_in">console</span>.log(i)   <span class="hljs-comment">// =&gt; 0</span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</code></pre>
+<h2 id="toc_10">函数柯里化<a class="vnote-anchor" href="#toc_10" data-anchor-icon="#"></a></h2>
+<h2 id="toc_11">隐藏一个元素<a class="vnote-anchor" href="#toc_11" data-anchor-icon="#"></a></h2>
+<p>CSS display的值是none。<br>
+type="hidden"的表单元素。<br>
+宽度和高度都显式设置为0。<br>
+一个祖先元素是隐藏的，该元素是不会在页面上显示<br>
+CSS visibility的值是hidden<br>
+CSS opacity的指是0<br>
+绝对定位，移出父元素边界</p>
+<h2 id="toc_12"><a href="https://www.jianshu.com/p/f4dbaaebe902">浏览器缓存</a><a class="vnote-anchor" href="#toc_12" data-anchor-icon="#"></a></h2>
+<h4 id="toc_13"><a href="https://segmentfault.com/a/1190000016705679">强缓存</a><a class="vnote-anchor" href="#toc_13" data-anchor-icon="#"></a></h4>
+<p>Cache-Control、Expires</p>
+<h4 id="toc_14">协商缓存<a class="vnote-anchor" href="#toc_14" data-anchor-icon="#"></a></h4>
+<p>Last-Modified)或者资源的标签（Etag)</p>
+<h4 id="toc_15">localstorage<a class="vnote-anchor" href="#toc_15" data-anchor-icon="#"></a></h4>
+<h2 id="toc_16">前端性能优化<a class="vnote-anchor" href="#toc_16" data-anchor-icon="#"></a></h2>
+<ul>
+<li>减少http请求（压缩、image雪碧图）</li>
+<li>缓存</li>
+<li>cdn</li>
+<li>Lazy Load Javascript</li>
+</ul>
+
+    </div>
+</div>
+</div>
+
+<div id="container-floating" style="display:none;" class="d-none d-md-block d-xl-block">
+    <div id="floating-button" onclick="toggleMore()">
+        <p id="floating-more" class="more">&gt;</p>
+    </div>
+</div>
+
+<!--
+<div class="footer" id="vnote-footer">
+    <p>Generated by <em><a href="https://tamlok.github.io/vnote/">VNote</a></em>.</p>
+</div>
+-->
+</body>
+</html>

@@ -2,9 +2,15 @@ vnote_backup_file_826537664 /Users/apple/Documents/vnote_notebooks/es6-babel/off
 # 自认为难题集锦
 
 ## 图片三角
+欢迎系统视频左上角和右下角的三角透明
 
 ## 动态路由
-
+问题：不同用户控制不同菜单权限
+首先，用户不同角色，然后给角色分配权限、根据当前用户所属所有角色，查询所有权限（权限包含导航栏显示的菜单、导航栏不显示的菜单、页面按钮、或者显示权限）。路由权限保存name、path、component、parentID
+前端，在加载main组件时请求后端，获取用户角色，然后挨个注册路由，路由在meta里面添加promise属性，属性包含页面内的按钮和显示权限。利用vuex改变导航栏
+结果：能够路由跳转、菜单高亮、组件懒加载
+问题：不能刷新页面。
+解决办法，打包前全部注册好路由，给每条路由一个唯一id，请求后端获取有权限的唯一id列表，然后在路由的`router.beforeEach`里面判断权限。但是有异步请求，需要用到异步函数。async+await然后next()。`path-to-regexp`
 ## 卡特兰数
 
 ## 手机图案解锁
@@ -14,4 +20,6 @@ vnote_backup_file_826537664 /Users/apple/Documents/vnote_notebooks/es6-babel/off
 ## iview 表权限申请 购物车功能
 
 ## 滑块验证码
+
+## BIgInt Long
 
